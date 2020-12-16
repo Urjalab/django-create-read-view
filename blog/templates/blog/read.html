@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+
+
+{% block content %}
+    
+    <div class="jumbotron">
+        <p class="h4 text-center">Read View - Blog</p>
+    </div>
+
+    <div class="container">
+        
+        {% for blog in blogs %}
+
+        <div class="card mb-5 rounded shadow-sm">
+            <div class="card-header bg-info text-light">
+              <div class="row">
+                <div class="col-8">
+                  <p class="card-title h5">{{blog.title}}</p>
+                </div>
+                <div class="col-4">
+                  <p class="small">{{blog.posted_at}} by {{blog.posted_by|title}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <p class="card-text lead">{{blog.content}}</p>
+                <img
+                  src="{{blog.image.url}}"
+                  alt="{{blog.title}} Image"
+                  style="max-width: 100px; height: auto"
+                />
+              </div>
+            </div>
+          </div>
+            
+        {% endfor %}
+            
+    </div>
+
+{% endblock content %}
+    

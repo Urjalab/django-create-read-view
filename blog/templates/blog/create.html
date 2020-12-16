@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %}
+
+
+{% block content %}
+    <div class="jumbotron">
+        <p class="h4 text-center">Create View - Blog</p>
+    </div>
+    <div class="container">
+        
+        {% comment %}
+            enctype is important.
+        {% endcomment %}
+            
+        <form method="POST" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-outline-primary">
+                Submit
+            </button>
+        </form>
+    </div>
+{% endblock content %}
+    
