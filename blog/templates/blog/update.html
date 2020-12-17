@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="jumbotron">
-        <p class="h4 text-center">Create View - Blog</p>
+        <p class="h4 text-center">Update View - Blog</p>
     </div>
     <div class="container">
         
@@ -16,7 +16,7 @@
                 {% csrf_token %}
                 {{form|crispy}}
                 <button type="submit" class="btn btn-outline-primary btn-block">
-                    Submit
+                    Update
                 </button>
             </form>
         </div>
