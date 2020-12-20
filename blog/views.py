@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 
 from .models import Post
 from .forms import PostForm
@@ -35,7 +37,7 @@ def create_view(request):
             
             post_model_obj.save()
 
-            return redirect('/')
+            return redirect('home_page')
         else:
             print(form_data.errors)
 
@@ -52,12 +54,13 @@ def create_view(request):
         context
     )
 
-
 def update_view(request, post_id):
+
+    post_obj = Post.objects.get(id=post_id) 
 
     if request.method == 'GET':
 
-        post_obj = Post.objects.get(id=post_id) # exception generate
+        # exception generate
         form = PostForm(instance=post_obj)
 
         context = {
@@ -77,17 +80,26 @@ def update_view(request, post_id):
         if form_data.is_valid():
 
             # https://stackoverflow.com/a/12848678/9755816
+            data = form_data.cleaned_data  # returns dictionary of valid form fields.
 
-            post_model_obj = form_data.cleaned_data # dictionary
+            post_obj.title = data.get('title')
+            post_obj.content = data.get('content')
 
-            post_model_obj = form_data.save(commit=False)
-            old_post_model_obj = Post.objects.get(id=post_id)
-            old_post_model_obj.title = post_model_obj.title            
-            old_post_model_obj.content = post_model_obj.content  
-            if post_model_obj.image is not None:
-                old_post_model_obj.image =   post_model_obj.image         
-            old_post_model_obj.save()
+            if data.get('image') is None:
+                pass
+            else:
+                post_obj.image = data.get('image')
 
-            return redirect('/')
+            post_obj.save()
+            return redirect('home_page')
         else:
-            print(form_data.errors)
+            return HttpResponse(str(form_data.errors))
+
+@require_POST # compels to accept only POST request.
+def delete_view(request, post_id):
+
+    post_obj = Post.objects.get(id=post_id) # generate exception
+
+    post_obj.delete()
+
+    return redirect('home_page')

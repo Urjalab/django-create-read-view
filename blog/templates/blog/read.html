@@ -8,6 +8,8 @@
     </div>
 
     <div class="container">
+
+        <a href="{% url 'create_post' %}" class=" mb-3 btn btn-light text-dark">Create Post</a>
         
         {% for blog in blogs %}
 
@@ -15,7 +17,18 @@
             <div class="card-header bg-info text-light">
               <div class="row">
                 <div class="col-8">
-                  <p class="card-title h5">{{blog.title}}</p>
+                  <p class="card-title h5 ">{{blog.title}}
+                    <br>
+                    <br>
+                    <a href="{% url 'update_post' blog.id %}" class="text-light small">Edit</a>&nbsp;
+
+                    <form action="{% url 'delete_post' blog.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="text-danger small" type="submit">Delete</button>
+                    </form>
+
+                    
+                  </p>
                 </div>
                 <div class="col-4">
                   <p class="small">{{blog.posted_at}} by {{blog.posted_by|title}}</p>
@@ -35,7 +48,6 @@
           </div>
             
         {% endfor %}
-            
     </div>
 
 {% endblock content %}
